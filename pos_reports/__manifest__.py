@@ -36,6 +36,7 @@
     },
     'data': [
     ],
+    "images": ['static/description/Banner.png'],
     'installable': True,
     'auto_install': False,
     'application': True,
