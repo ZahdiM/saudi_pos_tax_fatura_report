@@ -54,36 +54,6 @@
                     </h2>
                     <br/>
                 </t>
-    <!--            <div  class="pos-receipt-contact" style="text-align: center;-->
-    <!--                        font-size: 75%;">-->
-    <!--                <t t-if="receipt.company.contact_address">-->
-    <!--                    <div><t t-esc="receipt.company.contact_address" /></div>-->
-    <!--                </t>-->
-    <!--                <t t-if="receipt.company.phone">-->
-    <!--                    <div>Tel:<t t-esc="receipt.company.phone" /></div>-->
-    <!--                </t>-->
-    <!--                <t t-if="receipt.company.vat">-->
-    <!--                    <div><t t-esc="receipt.company.vat_label"/>:<t t-esc="receipt.company.vat" /></div>-->
-    <!--                </t>-->
-    <!--                <t t-if="receipt.company.email">-->
-    <!--                    <div><t t-esc="receipt.company.email" /></div>-->
-    <!--                </t>-->
-    <!--                <t t-if="receipt.company.website">-->
-    <!--                    <div><t t-esc="receipt.company.website" /></div>-->
-    <!--                </t>-->
-    <!--                <t t-if="receipt.header_html">-->
-    <!--                    <t t-raw="receipt.header_html" />-->
-    <!--                </t>-->
-    <!--                <t t-if="!receipt.header_html and receipt.header">-->
-    <!--                    <div><t t-esc="receipt.header" /></div>-->
-    <!--                </t>-->
-    <!--                <t t-if="receipt.cashier">-->
-    <!--                    <div class="cashier">-->
-    <!--                        <div>&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</div>-->
-    <!--                        <div>Served by <t t-esc="receipt.cashier" /></div>-->
-    <!--                    </div>-->
-    <!--                </t>-->
-    <!--            </div>-->
 
                 <div class="pos-receipt-contact" style="text-align: center;
                                                         font-size: 75%;">
@@ -190,12 +160,12 @@
                             <td width="40%" style="text-align:left;font-size:11px;padding: 5px 0;">
                                 <span>Total Taxable Amount (Excluding VAT)</span>
                             </td>
+                            <td width="20%" style="text-align:right;font-size:11px;padding: 5px 0;">
+                                <span t-esc="env.pos.format_currency(receipt.subtotal)"/>
+                            </td>
                             <td width="40%" style="text-align:right;font-size:11px;padding: 5px 0;">
                                 <span>إجمالي الخاضع للضريبة )غیر شامل ضریبة القیمة
     ( ال </span>
-                            </td>
-                            <td width="20%" style="text-align:right;font-size:11px;padding: 5px 0;">
-                                <span t-esc="env.pos.format_currency(receipt.subtotal)"/>
                             </td>
 
                         </tr>
@@ -203,22 +173,22 @@
                             <td width="40%" style="text-align:left;font-size:11px;padding: 5px 0;">
                                 <span>Total VAT</span>
                             </td>
-                            <td width="40%" style="text-align:right;font-size:11px;padding: 5px 0;">
-                                <span>مجموع ضریبة القیمة المضافة</span>
-                            </td>
                             <td width="20%" style="text-align:right;font-size:11px;padding: 5px 0;">
                                 <span t-esc="env.pos.format_currency(receipt.total_tax)" />
+                            </td>
+                            <td width="40%" style="text-align:right;font-size:11px;padding: 5px 0;">
+                                <span>مجموع ضریبة القیمة المضافة</span>
                             </td>
                         </tr>
                         <tr>
                             <td width="40%" style="text-align:left;font-size:11px;padding: 5px 0;">
                                 <span>Total Amount Due</span>
                             </td>
-                            <td width="40%" style="text-align:right;font-size:11px;padding: 5px 0;">
-                                <span>إجمالي المبلغ المستحق</span>
-                            </td>
                             <td width="20%" style="text-align:right;font-size:11px;padding: 5px 0;">
                                 <span t-esc="env.pos.format_currency(receipt.subtotal+receipt.total_tax)"/>
+                            </td>
+                            <td width="40%" style="text-align:right;font-size:11px;padding: 5px 0;">
+                                <span>إجمالي المبلغ المستحق</span>
                             </td>
                         </tr>
                     </table>
@@ -239,25 +209,18 @@
 
                 <div class="page" style="margin-bottom:30px;text-align:-webkit-center;">
 
-                    <div id="qrcode_tax_invoice"></div>
-                    <script type="text/javascript">
-                        var qrcode = new QRCode('qrcode_tax_invoice' , {
-                            width: 200,
-                            height:200,
-                            colorDark : "#000000",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                        });
-                        function lengthInUtf8Bytes(str) {
-                          var m = encodeURIComponent(str).match(/%[89ABab]/g);
-                          return str.length + (m ? m.length : 0);
-                        }
-                        qrcode.makeCode(Base64.encode('\x01' + String.fromCharCode(Number.parseInt((+lengthInUtf8Bytes('<t t-esc="receipt.company.name"/>').toString()).toString(16), 16)) + '<t t-esc="receipt.company.name"/>' +
-                                                      '\x02' + String.fromCharCode(Number.parseInt((+lengthInUtf8Bytes('<t t-if="receipt.company.vat" t-esc="receipt.company.vat"/>').toString()).toString(16), 16)) + '<t t-if="receipt.company.vat" t-esc="receipt.company.vat"/>' +
-                                                      '\x03' + String.fromCharCode(Number.parseInt((+lengthInUtf8Bytes('<t t-esc="receipt.date.localestring"/>').toString()).toString(16), 16)) + '<t t-esc="receipt.date.localestring"/>' +
-                                                      '\x04' + String.fromCharCode(Number.parseInt((+lengthInUtf8Bytes('<t t-esc="env.pos.format_currency(receipt.total_with_tax)"/>').toString()).toString(16), 16)) + '<t t-esc="env.pos.format_currency(receipt.total_with_tax)"/>' +
-                                                      '\x05' + String.fromCharCode(Number.parseInt((+lengthInUtf8Bytes('<t t-esc="env.pos.format_currency(receipt.total_tax)"/>').toString()).toString(16), 16)) + '<t t-esc="env.pos.format_currency(receipt.total_tax)"/>'));
-                    </script>
+
+                     <div>
+                         <div style="margin:10px; text-align: center; padding:0 13%;">
+                             <span id="qr_data" t-esc="receipt.qr_code" style="display: NONE;"/>
+                             <div id="qrcode" style="width:100%; height:200px; margin-bottom:10px; text-align: center;"></div>
+                             <script type="text/javascript">
+                                 var  qrData = document.getElementById("qr_data").innerHTML;
+                                 new QRCode(document.getElementById("qrcode"), {"text": qrData ,width:200, height:200, correctLevel : QRCode.CorrectLevel.H});
+                             </script>
+                         </div>
+                     </div>
+
                     <style>
                         @page { size: auto;  margin: 0mm; }
                     </style>

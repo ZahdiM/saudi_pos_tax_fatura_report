@@ -25,10 +25,10 @@
     'data': [
         'views/assets.xml',
     ],
-    'assets': {
+        'assets': {
         'point_of_sale.assets': [
-            'pos_reports/static/src/js/lib/qrcode.min.js',
-            'pos_reports/static/src/js/lib/base64.js',
+            'pos_reports/static/src/js/qrcode.js',
+            'pos_reports/static/src/js/pos.js',
         ],
         'web.assets_qweb': [
             'pos_reports/static/src/xml/OrderReceipt.xml',
